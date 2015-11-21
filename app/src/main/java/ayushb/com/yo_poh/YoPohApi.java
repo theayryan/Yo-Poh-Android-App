@@ -60,7 +60,15 @@ public interface YoPohApi {
             @Query("customerId") String customerId
     );
 
-    @GET("get/allcompanies")
+    @GET("/get/allproducts")
+    public Call<ResponseBody> getAllProducts();
+
+    @GET("/get/allproducts")
+    public Call<ResponseBody> getMyProducts(
+            @Query("customerId") String customerId
+    );
+
+    @GET("/get/allcompanies")
     public Call<ResponseBody> getAllCompanies();
 
 }

@@ -31,6 +31,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import ayushb.com.yo_poh.YoPohClasses.Company;
+import ayushb.com.yo_poh.YoPohClasses.Product;
 import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
@@ -44,6 +45,8 @@ public class AddProductScreen extends Fragment {
     private SharedPreferences prefs;
     private ArrayList<Company> companyArrayList = new ArrayList<>();
     private ArrayList<String> companyNames = new ArrayList<>();
+    private ArrayList<Product> productArrayList = new ArrayList<>();
+    private ArrayList<String> productNames = new ArrayList<>();
     AutoCompleteTextView companyTextView, categoryTextView;
     EditText name, price;
     Button addProductButton;
