@@ -83,7 +83,7 @@ public class AddComplaintDialog extends DialogFragment {
         final Spinner productsOptions = (Spinner) view.findViewById(R.id.products);
         Button addComplaint = (Button) view.findViewById(R.id.add_complaint_button);
 
-        Retrofit retrofit = new Retrofit.Builder()
+        final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -93,12 +93,12 @@ public class AddComplaintDialog extends DialogFragment {
         yoPohApi.getMyProducts(prefs.getString(Constants.GCM_REG_KEY,"")).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-                if(response!=null) {
+                if (response != null) {
                     String result = responseString(response);
-                    if(!TextUtils.isEmpty(result)){
+                    if (!TextUtils.isEmpty(result)) {
                         try {
                             JSONArray array = new JSONArray(result);
-                            for (int i = 0;i<array.length();i++){
+                            for (int i = 0; i < array.length(); i++) {
                                 JSONObject jsonObject = array.getJSONObject(i);
                                 Product product = new Product();
                                 product.setProductId(jsonObject.getString("productId"));
@@ -106,18 +106,19 @@ public class AddComplaintDialog extends DialogFragment {
                                 product.setPrice(jsonObject.getString("price"));
                                 product.setCompanyId(jsonObject.getString("companyId"));
                                 product.setProductName(jsonObject.getString("productName"));
+                                products.add(product);
                                 spinnerOptions.add(product.getProductName());
                             }
-                            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(activity,android.R.layout.select_dialog_item,spinnerOptions);
+                            ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(activity, android.R.layout.select_dialog_item, spinnerOptions);
                             productsOptions.setAdapter(spinnerAdapter);
-                            if(progress.isShowing()){
+                            if (progress.isShowing()) {
                                 progress.dismiss();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             if (progress.isShowing())
                                 progress.dismiss();
-                            Toast.makeText(activity,"Some Problem Occurred",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, "Some Problem Occurred", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -128,7 +129,42 @@ public class AddComplaintDialog extends DialogFragment {
             public void onFailure(Throwable t) {
                 if (progress.isShowing())
                     progress.dismiss();
-                Toast.makeText(activity,"Server Problem",Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Server Problem", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        addComplaint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(Product product:products){
+                    if(product.getProductName() == productsOptions.getSelectedItem().toString())
+                        chosenProduct = product;
+                }
+                yoPohApi.generateComplaint(
+                        chosenProduct.getProductId(),
+                        prefs.getString(Constants.GCM_REG_KEY,""),
+                        chosenProduct.getCompanyId()
+                ).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                        if(response!=null){
+                            String result = responseString(response);
+                            try {
+                                JSONObject jsonObject = new JSONObject(result);
+                                Toast.makeText(activity,"Ticket Number Generated: "+jsonObject.getLong("ticketNumber"),Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Throwable t) {
+
+                    }
+                });
             }
         });
         return view;

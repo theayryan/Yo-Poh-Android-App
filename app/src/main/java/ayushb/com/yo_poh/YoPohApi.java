@@ -67,4 +67,11 @@ public interface YoPohApi {
     @GET("/get/allcompanies")
     public Call<ResponseBody> getAllCompanies();
 
+    @GET("/get/generatecomplaint")
+    public Call<ResponseBody> generateComplaint(
+            @Query("productId") String productId,
+            @Query("customerId") String customerId,
+            @Query("companyId") String companyId
+    );
+
 }
