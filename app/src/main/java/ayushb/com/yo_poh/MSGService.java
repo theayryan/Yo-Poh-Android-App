@@ -47,29 +47,27 @@ public class MSGService extends IntentService {
 
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+                    sendNotification(extras.getString("Message"), extras.getString("From"), extras.getString("Channel"));
 
-                if (!prefs.getString("CURRENT_ACTIVE", "").equals(extras.getString("fromu"))) {
-                    sendNotification(extras.getString("msg"), extras.getString("fromu"), extras.getString("name"));
-                }
-                Log.i("TAG", "Received: " + extras.getString("msg"));
+                Log.i("TAG", "Received: " + extras.getString("Message"));
             }
         }
         MSGReceiver.completeWakefulIntent(intent);
     }
 
 
-    private void sendNotification(String msg, String mobno, String name) {
+    private void sendNotification(String msg, String from, String channel) {
 
         Bundle args = new Bundle();
-        args.putString("mobno", mobno);
-        args.putString("name", name);
-        args.putString("msg", msg);
+        args.putString("Message", msg);
+        args.putString("From", from);
+        args.putString("Channel", channel);
         Intent chat = new Intent(this, ChatActivity.class);
         chat.putExtra("INFO", args);
         notification = new NotificationCompat.Builder(this);
-        notification.setContentTitle(name);
+        notification.setContentTitle("Yo-Poh");
         notification.setContentText(msg);
-        notification.setTicker("New Message !");
+        notification.setTicker("New Message!");
         notification.setSmallIcon(R.drawable.ic_launcher);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 1000,

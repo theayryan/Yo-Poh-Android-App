@@ -74,4 +74,9 @@ public interface YoPohApi {
             @Query("companyId") String companyId
     );
 
+    @GET("/get/mytickets")
+    public Call<ResponseBody> getMyTickets(
+            @Query("customerId") String customerId
+    );
+
 }

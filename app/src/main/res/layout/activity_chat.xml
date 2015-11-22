@@ -5,7 +5,8 @@
     android:layout_height="match_parent">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="600px">
+        android:layout_height="0dip"
+        android:layout_weight="1">
 
         <TableLayout
             android:layout_width="match_parent"
@@ -15,7 +16,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="50dp">
 
         <Button android:text="Send"
             android:id="@+id/sendbtn"

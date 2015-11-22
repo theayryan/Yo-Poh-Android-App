@@ -55,6 +55,12 @@ public class HomeScreen extends Fragment implements View.OnClickListener {
         FragmentTransaction ft;
         switch (id) {
             case R.id.view_complaints:
+                reg = new ViewComplaintScreen();
+                ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame, reg);
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+                ft.addToBackStack(null);
+                ft.commit();
                 break;
             case R.id.add_complaint:
                 addComplaintDialog = AddComplaintDialog.getInstance();

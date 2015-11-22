@@ -11,4 +11,5 @@ public class Constants {
     public static String USER_ADDRESS = "user_address";
     public static String REGISTERED = "registered";
     public static String BASE_URL = "http://10.6.3.177:8080";
+    public static String CHAT_DETAILS = "chat_details";
 }
