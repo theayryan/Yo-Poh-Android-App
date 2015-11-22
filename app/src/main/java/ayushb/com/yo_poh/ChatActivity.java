@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,7 +20,6 @@ import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.pubnub.api.Callback;
 import com.pubnub.api.Pubnub;
@@ -29,7 +27,6 @@ import com.pubnub.api.PubnubError;
 import com.pubnub.api.PubnubException;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,15 +53,14 @@ public class ChatActivity extends Activity {
             String from = intent.getStringExtra("From");
             String channel = intent.getStringExtra("Channel");
 
-                TableRow tr1 = new TableRow(getApplicationContext());
-                tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-                TextView textview = new TextView(getApplicationContext());
-                textview.setTextSize(20);
-                textview.setTextColor(Color.parseColor("#0B0719"));
-                textview.setText(Html.fromHtml("<b>" + from + " : </b>" + message));
-                tr1.addView(textview);
-                tab.addView(tr1);
-
+            TableRow tr1 = new TableRow(getApplicationContext());
+            tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+            TextView textview = new TextView(getApplicationContext());
+            textview.setTextSize(20);
+            textview.setTextColor(Color.parseColor("#0B0719"));
+            textview.setText(Html.fromHtml("<b>" + from + " : </b>" + message));
+            tr1.addView(textview);
+            tab.addView(tr1);
 
 
         }
@@ -79,18 +75,17 @@ public class ChatActivity extends Activity {
         tab = (TableLayout) findViewById(R.id.tab);
         bundle = getIntent().getBundleExtra("INFO");
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        complaint =(Complaint) getIntent().getSerializableExtra(Constants.CHAT_DETAILS);
+        complaint = (Complaint) getIntent().getSerializableExtra(Constants.CHAT_DETAILS);
         SharedPreferences.Editor edit = prefs.edit();
 
         pubnub = new Pubnub(
                 "pub-c-11fab31d-7614-4488-b338-2953846af28a" /* replace with your publish key */,
                 "sub-c-17a0ba6c-90ef-11e5-b0f3-02ee2ddab7fe" /* replace with your subscribe key */);
-        if(complaint!=null) {
+        if (complaint != null) {
             pubnub.enablePushNotificationsOnChannel(
                     complaint.getChannel(),
                     prefs.getString(Constants.GCM_REG_KEY, ""));
-        }
-        else{
+        } else {
             pubnub.enablePushNotificationsOnChannel(
                     bundle.getString("Channel"),
                     prefs.getString(Constants.GCM_REG_KEY, ""));
@@ -169,9 +164,9 @@ public class ChatActivity extends Activity {
                             }
                         }
                 );
-            }catch(PubnubException e){
-                e.printStackTrace();
-            }
+        } catch (PubnubException e) {
+            e.printStackTrace();
+        }
 
 
         Callback callback = new Callback() {
@@ -181,21 +176,20 @@ public class ChatActivity extends Activity {
                 try {
                     JSONArray responseJson = (JSONArray) response;
                     JSONArray messages = (JSONArray) responseJson.getJSONArray(0);
-                    for(int i = 0;i<messages.length();i++){
+                    for (int i = 0; i < messages.length(); i++) {
 
                         Message message = new Message();
-                        if(messages.get(i).toString().contains("pn_gcm")){
+                        if (messages.get(i).toString().contains("pn_gcm")) {
                             JSONObject object = messages.getJSONObject(i);
                             JSONObject pn_gcm = (JSONObject) object.get("pn_gcm");
                             JSONObject data = (JSONObject) pn_gcm.get("data");
-                            if(data.toString().contains("Message"))
+                            if (data.toString().contains("Message"))
                                 message.message = data.getString("Message");
-                            if(data.toString().contains("From"))
+                            if (data.toString().contains("From"))
                                 message.from = data.getString("From");
                             else
-                                message.from=" ";
-                        }
-                        else{
+                                message.from = " ";
+                        } else {
                             message.from = "You";
                             message.message = messages.get(i).toString();
                         }
@@ -207,17 +201,18 @@ public class ChatActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        for(Message message: messagesArray)
+                        for (Message message : messagesArray)
                             addRow(message);
                     }
                 });
 
             }
+
             public void errorCallback(String channel, PubnubError error) {
                 System.out.println(error.toString());
             }
         };
-        if(complaint!=null)
+        if (complaint != null)
             pubnub.history(complaint.getChannel(), 100, true, callback);
         else
             pubnub.history(bundle.getString("Channel"), 100, true, callback);
@@ -225,7 +220,7 @@ public class ChatActivity extends Activity {
 
         LocalBroadcastManager.getInstance(this).registerReceiver(onNotice, new IntentFilter("Msg"));
 
-        if(bundle!=null) {
+        if (bundle != null) {
             if (bundle.get("From") != null) {
                 Message message = new Message();
                 message.from = bundle.getString("From");
@@ -265,20 +260,19 @@ public class ChatActivity extends Activity {
 
     }
 
-    public void addRow(Message message){
+    public void addRow(Message message) {
 
 
         TableRow tr2 = new TableRow(getApplicationContext());
         tr2.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         TextView textview = new TextView(getApplicationContext());
         textview.setTextSize(20);
-        if(message.from.equalsIgnoreCase("You")) {
+        if (message.from.equalsIgnoreCase("You")) {
             textview.setTextColor(Color.parseColor("#A901DB"));
             textview.setGravity(Gravity.RIGHT);
-        }
-        else
+        } else
             textview.setTextColor(Color.parseColor("#0B0719"));
-        textview.setText(Html.fromHtml("<b>"+ message.from +":"+"</b>" + message.message));
+        textview.setText(Html.fromHtml("<b>" + message.from + ":" + "</b>" + message.message));
         tr2.addView(textview);
         tab.addView(tr2);
     }

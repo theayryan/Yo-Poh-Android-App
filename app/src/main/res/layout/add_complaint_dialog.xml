@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="wrap_content"
               android:layout_height="match_parent"
-              android:padding="10dp"
-    android:gravity="center">
+              android:gravity="center"
+              android:orientation="vertical"
+              android:padding="10dp">
 
     <Spinner
         android:id="@+id/products"
-        android:layout_margin="20dip"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
+        android:layout_margin="20dip"
         android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"/>
 
     <Button
+        android:id="@+id/add_complaint_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Complaint"
-        android:id="@+id/add_complaint_button"
         android:layout_marginBottom="10dip"
+        android:text="Add Complaint"
         />
 
 </LinearLayout>

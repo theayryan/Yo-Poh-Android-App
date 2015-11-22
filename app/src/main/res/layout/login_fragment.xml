@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"
         android:id="@+id/name"
-        android:layout_gravity="center" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Name"/>
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Mobile Number"
         android:id="@+id/mobno"
-        android:layout_gravity="center"
-        android:phoneNumber="false"
-        android:inputType="number" />
-    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Email Id"
+        android:layout_gravity="center"
+        android:hint="Mobile Number"
+        android:inputType="number"
+        android:phoneNumber="false"/>
+
+    <EditText
         android:id="@+id/emailId"
-        android:layout_gravity="center"
-        android:phoneNumber="false"
-        android:inputType="textEmailAddress" />
-    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Address"
-        android:id="@+id/address"
         android:layout_gravity="center"
-        android:phoneNumber="false"
-        android:inputType="textPostalAddress" />
+        android:hint="Email Id"
+        android:inputType="textEmailAddress"
+        android:phoneNumber="false"/>
+
+    <EditText
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:hint="Address"
+        android:inputType="textPostalAddress"
+        android:phoneNumber="false"/>
 
     <Button
+        android:id="@+id/log_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Submit Details"
-        android:id="@+id/log_btn"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:text="Submit Details"/>
 </LinearLayout>

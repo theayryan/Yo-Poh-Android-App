@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-                android:gravity="center">
+              android:gravity="center"
+              android:orientation="vertical">
+
     <Button
+        android:id="@+id/add_product"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/add_product"
-        android:text="Add Product"
         android:layout_margin="20dp"
+        android:text="Add Product"
         android:textSize="20sp"/>
 
     <Button
+        android:id="@+id/add_complaint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/add_complaint"
         android:layout_margin="20dp"
         android:text="Add Complaint"
         android:textSize="20sp"/>
 
     <Button
+        android:id="@+id/view_complaints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/view_complaints"
         android:layout_margin="20dp"
         android:text="View Complaints"
         android:textSize="20sp"/>
 
     <Button
+        android:id="@+id/edit_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/edit_details"
         android:layout_margin="20dp"
         android:text="Edit Details"
         android:textSize="20sp"/>

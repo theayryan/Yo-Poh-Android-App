@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
-        android:textSize="40px"
+        android:layout_height="50px"
         android:textColor="#ff5bb111"
-        android:layout_height="50px"/>
+        android:textSize="40px"/>
+
     <TextView
         android:id="@+id/mobno"
         android:layout_width="match_parent"
-        android:textSize="30px"
+        android:layout_height="50px"
         android:textColor="#8904B1"
-        android:layout_height="50px"/>
+        android:textSize="30px"/>
 
 </LinearLayout>

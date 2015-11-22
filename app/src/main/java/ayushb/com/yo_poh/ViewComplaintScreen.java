@@ -38,13 +38,13 @@ import retrofit.Retrofit;
  * Created by ayushb on 22/11/15.
  */
 public class ViewComplaintScreen extends Fragment {
+    ComplaintsAdapter adapter;
     private FragmentActivity activity;
     private SharedPreferences prefs;
     private ListView complaintsListView;
     private YoPohApi yoPohApi;
     private ProgressDialog progress;
     private ArrayList<Complaint> complaints = new ArrayList<>();
-    ComplaintsAdapter adapter;
 
     @Override
     public void onAttach(Context context) {
@@ -63,8 +63,8 @@ public class ViewComplaintScreen extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Complaint chosenComplaint = complaints.get(position);
-                Intent intent = new Intent(getActivity(),ChatActivity.class);
-                intent.putExtra(Constants.CHAT_DETAILS,chosenComplaint);
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(Constants.CHAT_DETAILS, chosenComplaint);
                 getActivity().startActivity(intent);
             }
         });
@@ -81,12 +81,12 @@ public class ViewComplaintScreen extends Fragment {
         yoPohApi.getMyTickets(prefs.getString(Constants.GCM_REG_KEY, "")).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-                if(response!=null){
-                    String result =responseString(response);
-                    if(!TextUtils.isEmpty(result)){
+                if (response != null) {
+                    String result = responseString(response);
+                    if (!TextUtils.isEmpty(result)) {
                         try {
                             JSONArray array = new JSONArray(result);
-                            for(int i = 0;i<array.length();i++){
+                            for (int i = 0; i < array.length(); i++) {
                                 Complaint complaint = new Complaint();
                                 JSONObject jsonObject = array.getJSONObject(i);
                                 complaint.setProductName(jsonObject.getString("productName"));
@@ -99,15 +99,15 @@ public class ViewComplaintScreen extends Fragment {
                                 complaint.setTicketNumber(jsonObject.getLong("ticketNumber"));
                                 complaints.add(complaint);
                             }
-                            adapter = new ComplaintsAdapter(activity,complaints,activity);
+                            adapter = new ComplaintsAdapter(activity, complaints, activity);
                             complaintsListView.setAdapter(adapter);
-                            if(progress.isShowing())
+                            if (progress.isShowing())
                                 progress.dismiss();
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            if(progress.isShowing())
+                            if (progress.isShowing())
                                 progress.dismiss();
-                            Toast.makeText(activity,"Error",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -115,9 +115,9 @@ public class ViewComplaintScreen extends Fragment {
 
             @Override
             public void onFailure(Throwable t) {
-                if(progress.isShowing())
+                if (progress.isShowing())
                     progress.dismiss();
-                Toast.makeText(activity,"Server Error",Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, "Server Error", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
@@ -127,7 +127,7 @@ public class ViewComplaintScreen extends Fragment {
         ResponseBody result = response.body();
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
-        if(result!=null) {
+        if (result != null) {
             try {
 
                 reader = new BufferedReader(new InputStreamReader(result.byteStream()));

@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <AutoCompleteTextView
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/name"
         android:hint="Name"/>
 
     <AutoCompleteTextView
+        android:id="@+id/company_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Company Name"
-        android:id="@+id/company_name"/>
+        android:hint="Company Name"/>
 
     <AutoCompleteTextView
+        android:id="@+id/category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Category"
-        android:id="@+id/category"/>
+        android:hint="Category"/>
 
     <EditText
+        android:id="@+id/price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/price"
-        android:inputType="numberDecimal"
         android:hint="Price"
+        android:inputType="numberDecimal"
         />
 
     <Button
+        android:id="@+id/add_product_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Product"
-        android:id="@+id/add_product_button"
-        android:layout_gravity="center_horizontal"/>
+        android:layout_gravity="center_horizontal"
+        android:text="Add Product"/>
 </LinearLayout>

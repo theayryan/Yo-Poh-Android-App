@@ -147,18 +147,18 @@ public class AddComplaintDialog extends DialogFragment {
                     public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                         if (response != null) {
                             String result = responseString(response);
-                            if(result!=null) {
+                            if (result != null) {
                                 try {
                                     JSONObject jsonObject = new JSONObject(result);
-                                    if(progress.isShowing())
+                                    if (progress.isShowing())
                                         progress.dismiss();
                                     Toast.makeText(activity, "Ticket Number Generated: " + jsonObject.getLong("ticketNumber"), Toast.LENGTH_SHORT).show();
                                     AddComplaintDialog.this.dismiss();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                    if(progress.isShowing())
+                                    if (progress.isShowing())
                                         progress.dismiss();
-                                    Toast.makeText(activity,"Error",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(activity, "Error", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         }
@@ -166,9 +166,9 @@ public class AddComplaintDialog extends DialogFragment {
 
                     @Override
                     public void onFailure(Throwable t) {
-                        if(progress.isShowing())
+                        if (progress.isShowing())
                             progress.dismiss();
-                        Toast.makeText(activity,"Server Problem",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Server Problem", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -180,7 +180,7 @@ public class AddComplaintDialog extends DialogFragment {
         ResponseBody result = response.body();
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
-        if(result!=null) {
+        if (result != null) {
             try {
 
                 reader = new BufferedReader(new InputStreamReader(result.byteStream()));

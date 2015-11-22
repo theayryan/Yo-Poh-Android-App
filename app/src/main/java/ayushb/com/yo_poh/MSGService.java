@@ -47,7 +47,7 @@ public class MSGService extends IntentService {
 
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                    sendNotification(extras.getString("Message"), extras.getString("From"), extras.getString("Channel"));
+                sendNotification(extras.getString("Message"), extras.getString("From"), extras.getString("Channel"));
 
                 Log.i("TAG", "Received: " + extras.getString("Message"));
             }

@@ -30,7 +30,7 @@ public class ComplaintsAdapter extends ArrayAdapter<Complaint> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if(convertView==null){
+        if (convertView == null) {
             // inflate the layout
             LayoutInflater inflater = activity.getLayoutInflater();
             convertView = inflater.inflate(R.layout.complaint_list_item, parent, false);
@@ -41,7 +41,7 @@ public class ComplaintsAdapter extends ArrayAdapter<Complaint> {
         TextView dateCreated = (TextView) convertView.findViewById(R.id.date_created);
 
         productName.setText(objects.get(position).getProductName());
-        ticketNumber.setText("Ticket Number: "+objects.get(position).getTicketNumber());
+        ticketNumber.setText("Ticket Number: " + objects.get(position).getTicketNumber());
         Date date = new java.sql.Date(objects.get(position).getDateCreated());
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
         dateCreated.setText(sdf.format(date));

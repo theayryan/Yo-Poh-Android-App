@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:tools="http://schemas.android.com/tools"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <TextView
+        android:id="@+id/ticket_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Ticket Number"
         android:textSize="18sp"
-        android:id="@+id/ticket_number"/>
+        tools:text="Ticket Number"/>
 
     <TextView
+        android:id="@+id/product_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Product Name"
         android:textSize="18sp"
-        android:id="@+id/product_name"/>
+        tools:text="Product Name"/>
 
     <TextView
+        android:id="@+id/date_created"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="Date Created"
         android:gravity="right"
-        android:id="@+id/date_created"
+        tools:text="Date Created"
         />
 
 </LinearLayout>
