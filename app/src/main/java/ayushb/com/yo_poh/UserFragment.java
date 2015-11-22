@@ -1,11 +1,11 @@
 package ayushb.com.yo_poh;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,23 +30,23 @@ import java.util.List;
 public class UserFragment extends Fragment {
     ListView list;
     ArrayList<HashMap<String, String>> users = new ArrayList<HashMap<String, String>>();
-    Button refresh,logout;
+    Button refresh, logout;
     List<NameValuePair> params;
     SharedPreferences prefs;
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
-        View view =inflater.inflate(R.layout.user_fragment, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.user_fragment, container, false);
         prefs = getActivity().getSharedPreferences("Chat", 0);
 
-        list = (ListView)view.findViewById(R.id.listView);
-        refresh = (Button)view.findViewById(R.id.refresh);
-        logout = (Button)view.findViewById(R.id.logout);
+        list = (ListView) view.findViewById(R.id.listView);
+        refresh = (Button) view.findViewById(R.id.refresh);
+        logout = (Button) view.findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new  Logout().execute();
+                new Logout().execute();
 
             }
         });
@@ -118,6 +118,7 @@ public class UserFragment extends Fragment {
             }
         }
     }
+
     private class Logout extends AsyncTask<String, String, JSONObject> {
 
         @Override
@@ -125,18 +126,19 @@ public class UserFragment extends Fragment {
             JSONParser json = new JSONParser();
             params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("mobno", prefs.getString("REG_FROM", "")));
-            JSONObject jObj = json.getJSONFromUrl("http://127.0.0.1:8080/logout",params);
+            JSONObject jObj = json.getJSONFromUrl("http://127.0.0.1:8080/logout", params);
 
             return jObj;
         }
+
         @Override
         protected void onPostExecute(JSONObject json) {
 
             String res = null;
             try {
                 res = json.getString("response");
-                Toast.makeText(getActivity(),res,Toast.LENGTH_SHORT).show();
-                if(res.equals("Removed Sucessfully")) {
+                Toast.makeText(getActivity(), res, Toast.LENGTH_SHORT).show();
+                if (res.equals("Removed Sucessfully")) {
                     Fragment reg = new LoginFragment();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
                     ft.replace(R.id.content_frame, reg);
@@ -150,7 +152,6 @@ public class UserFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
 
 
         }

@@ -1,13 +1,13 @@
 package ayushb.com.yo_poh;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -20,47 +20,45 @@ import java.io.IOException;
 
 public class MainActivity extends FragmentActivity {
 
-    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
-
-    String SENDER_ID = "402397630096";
-
-
     static final String TAG = "L2C";
-
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
+    String SENDER_ID = "402397630096";
     GoogleCloudMessaging gcm;
     SharedPreferences prefs;
     Context context;
     String regid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         context = getApplicationContext();
-        if(prefs.getString(Constants.GCM_REG_KEY, "").isEmpty()){
+        if (prefs.getString(Constants.GCM_REG_KEY, "").isEmpty()) {
             new Register().execute();
         }
-        if (prefs.getBoolean(Constants.REGISTERED, false)){
+        if (prefs.getBoolean(Constants.REGISTERED, false)) {
             Fragment user = new HomeScreen();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, user);
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);ft.addToBackStack(null);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+            ft.addToBackStack(null);
             ft.commit();
-        }
-        else if(!prefs.getString(Constants.GCM_REG_KEY, "").isEmpty()){
+        } else if (!prefs.getString(Constants.GCM_REG_KEY, "").isEmpty()) {
             Fragment reg = new LoginFragment();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.content_frame, reg);
             ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             ft.commit();
 
-        }else if(checkPlayServices()){
+        } else if (checkPlayServices()) {
             new Register().execute();
 
-        }else{
-            Toast.makeText(getApplicationContext(),"This device is not supported",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "This device is not supported", Toast.LENGTH_SHORT).show();
         }
     }
+
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
@@ -93,7 +91,7 @@ public class MainActivity extends FragmentActivity {
 
                 }
 
-                return  regid;
+                return regid;
 
             } catch (IOException ex) {
                 Log.e("Error", ex.getMessage());
@@ -101,6 +99,7 @@ public class MainActivity extends FragmentActivity {
 
             }
         }
+
         @Override
         protected void onPostExecute(String json) {
             Fragment reg = new LoginFragment();

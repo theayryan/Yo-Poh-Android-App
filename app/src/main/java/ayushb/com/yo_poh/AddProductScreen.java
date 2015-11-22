@@ -41,18 +41,18 @@ import retrofit.Retrofit;
  * Created by ayushb on 21/11/15.
  */
 public class AddProductScreen extends Fragment {
+    AutoCompleteTextView name, companyTextView, categoryTextView;
+    EditText price;
+    Button addProductButton;
     private FragmentActivity activity;
     private SharedPreferences prefs;
     private ArrayList<Company> companyArrayList = new ArrayList<>();
     private ArrayList<String> companyNames = new ArrayList<>();
     private ArrayList<Product> productArrayList = new ArrayList<>();
     private ArrayList<String> productNames = new ArrayList<>();
-    AutoCompleteTextView name,companyTextView, categoryTextView;
-    EditText price;
-    Button addProductButton;
     private YoPohApi yoPohApi;
     private ProgressDialog progress;
-    private String [] categories = new String[]{"Electronics","Mobiles","Computers"};
+    private String[] categories = new String[]{"Electronics", "Mobiles", "Computers"};
 
     @Override
     public void onAttach(Context context) {
@@ -140,43 +140,42 @@ public class AddProductScreen extends Fragment {
                     companyTextView.setAdapter(companyAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    if(progress.isShowing())
+                    if (progress.isShowing())
                         progress.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Throwable t) {
-                if(progress.isShowing())
+                if (progress.isShowing())
                     progress.dismiss();
-                Toast.makeText(getActivity(),"Could not connect to the server",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Could not connect to the server", Toast.LENGTH_SHORT).show();
             }
         });
-        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(activity,android.R.layout.select_dialog_item,categories);
+        ArrayAdapter<String> categoriesAdapter = new ArrayAdapter<String>(activity, android.R.layout.select_dialog_item, categories);
         categoryTextView.setAdapter(categoriesAdapter);
 
         addProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String productId = null;
-                for(Product product: productArrayList) {
-                    if(product.getProductName().equalsIgnoreCase(name.getText().toString())){
+                for (Product product : productArrayList) {
+                    if (product.getProductName().equalsIgnoreCase(name.getText().toString())) {
                         productId = product.getProductId();
                     }
                 }
                 yoPohApi.addProduct(
-                        prefs.getString(Constants.GCM_REG_KEY,""),
+                        prefs.getString(Constants.GCM_REG_KEY, ""),
                         productId
                 ).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                         String resultString = responseString(response);
                         Log.d("Response", resultString);
-                        if(!TextUtils.isEmpty(resultString)) {
-                            Toast.makeText(activity,"Product Added",Toast.LENGTH_SHORT).show();
-                        }
-                        else {
-                            Toast.makeText(activity,"Some problem occurred",Toast.LENGTH_SHORT).show();
+                        if (!TextUtils.isEmpty(resultString)) {
+                            Toast.makeText(activity, "Product Added", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(activity, "Some problem occurred", Toast.LENGTH_SHORT).show();
                         }
                         if (progress.isShowing()) {
                             progress.dismiss();
@@ -185,7 +184,7 @@ public class AddProductScreen extends Fragment {
 
                     @Override
                     public void onFailure(Throwable t) {
-                        Toast.makeText(activity,"Some problem occurred",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Some problem occurred", Toast.LENGTH_SHORT).show();
                         if (progress.isShowing()) {
                             progress.dismiss();
                         }
@@ -196,7 +195,7 @@ public class AddProductScreen extends Fragment {
         return view;
     }
 
-    private String responseString(Response<ResponseBody> response){
+    private String responseString(Response<ResponseBody> response) {
         ResponseBody result = response.body();
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
@@ -219,14 +218,14 @@ public class AddProductScreen extends Fragment {
         return sb.toString();
     }
 
-    private void showProgressDialog(){
-        if(progress==null) {
+    private void showProgressDialog() {
+        if (progress == null) {
             progress = new ProgressDialog(getActivity());
             progress.setMessage("Setting Up...");
             progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progress.setIndeterminate(true);
         }
-        if(!progress.isShowing())
+        if (!progress.isShowing())
             progress.show();
     }
 }

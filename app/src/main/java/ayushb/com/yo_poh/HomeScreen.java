@@ -53,7 +53,7 @@ public class HomeScreen extends Fragment implements View.OnClickListener {
         int id = v.getId();
         Fragment reg;
         FragmentTransaction ft;
-        switch (id){
+        switch (id) {
             case R.id.view_complaints:
                 break;
             case R.id.add_complaint:

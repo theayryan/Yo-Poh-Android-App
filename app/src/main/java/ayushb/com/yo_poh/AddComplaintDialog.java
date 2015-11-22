@@ -8,21 +8,17 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.gson.JsonObject;
 import com.squareup.okhttp.ResponseBody;
 
 import org.json.JSONArray;
@@ -90,7 +86,7 @@ public class AddComplaintDialog extends DialogFragment {
 
         yoPohApi = retrofit.create(YoPohApi.class);
         showProgressDialog();
-        yoPohApi.getMyProducts(prefs.getString(Constants.GCM_REG_KEY,"")).enqueue(new Callback<ResponseBody>() {
+        yoPohApi.getMyProducts(prefs.getString(Constants.GCM_REG_KEY, "")).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
                 if (response != null) {
@@ -137,32 +133,42 @@ public class AddComplaintDialog extends DialogFragment {
         addComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(Product product:products){
-                    if(product.getProductName() == productsOptions.getSelectedItem().toString())
+                showProgressDialog();
+                for (Product product : products) {
+                    if (product.getProductName() == productsOptions.getSelectedItem().toString())
                         chosenProduct = product;
                 }
                 yoPohApi.generateComplaint(
                         chosenProduct.getProductId(),
-                        prefs.getString(Constants.GCM_REG_KEY,""),
+                        prefs.getString(Constants.GCM_REG_KEY, ""),
                         chosenProduct.getCompanyId()
                 ).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
-                        if(response!=null){
+                        if (response != null) {
                             String result = responseString(response);
-                            try {
-                                JSONObject jsonObject = new JSONObject(result);
-                                Toast.makeText(activity,"Ticket Number Generated: "+jsonObject.getLong("ticketNumber"),Toast.LENGTH_SHORT).show();
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            if(result!=null) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    if(progress.isShowing())
+                                        progress.dismiss();
+                                    Toast.makeText(activity, "Ticket Number Generated: " + jsonObject.getLong("ticketNumber"), Toast.LENGTH_SHORT).show();
+                                    AddComplaintDialog.this.dismiss();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    if(progress.isShowing())
+                                        progress.dismiss();
+                                    Toast.makeText(activity,"Error",Toast.LENGTH_SHORT).show();
+                                }
                             }
-
                         }
                     }
 
                     @Override
                     public void onFailure(Throwable t) {
-
+                        if(progress.isShowing())
+                            progress.dismiss();
+                        Toast.makeText(activity,"Server Problem",Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -170,37 +176,39 @@ public class AddComplaintDialog extends DialogFragment {
         return view;
     }
 
-    private String responseString(Response<ResponseBody> response){
+    private String responseString(Response<ResponseBody> response) {
         ResponseBody result = response.body();
         BufferedReader reader = null;
         StringBuilder sb = new StringBuilder();
-        try {
-
-            reader = new BufferedReader(new InputStreamReader(result.byteStream()));
-
-            String line;
-
+        if(result!=null) {
             try {
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
+
+                reader = new BufferedReader(new InputStreamReader(result.byteStream()));
+
+                String line;
+
+                try {
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return sb.toString();
     }
 
-    private void showProgressDialog(){
-        if(progress==null) {
+    private void showProgressDialog() {
+        if (progress == null) {
             progress = new ProgressDialog(getActivity());
             progress.setMessage("Setting Up...");
             progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progress.setIndeterminate(true);
         }
-        if(!progress.isShowing())
+        if (!progress.isShowing())
             progress.show();
     }
 

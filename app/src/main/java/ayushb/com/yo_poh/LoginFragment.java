@@ -1,14 +1,12 @@
 package ayushb.com.yo_poh;
 
 
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,17 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-
 import com.squareup.okhttp.ResponseBody;
 
 import org.apache.http.NameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Call;
@@ -45,22 +39,23 @@ public class LoginFragment extends Fragment {
     List<NameValuePair> params;
     ProgressDialog progress;
     YoPohApi yoPohApi;
+
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_fragment, container, false);
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        nameInput = (EditText)view.findViewById(R.id.name);
-        mobnoInput = (EditText)view.findViewById(R.id.mobno);
-        emailIdInput = (EditText)view.findViewById(R.id.emailId);
-        addressInput = (EditText)view.findViewById(R.id.address);
+        nameInput = (EditText) view.findViewById(R.id.name);
+        mobnoInput = (EditText) view.findViewById(R.id.mobno);
+        emailIdInput = (EditText) view.findViewById(R.id.emailId);
+        addressInput = (EditText) view.findViewById(R.id.address);
 
-        nameInput.setText(prefs.getString(Constants.NAME,""));
-        mobnoInput.setText(prefs.getString(Constants.MOB_NUMBER,""));
-        emailIdInput.setText(prefs.getString(Constants.USER_EMAIL,""));
-        addressInput.setText(prefs.getString(Constants.USER_ADDRESS,""));
+        nameInput.setText(prefs.getString(Constants.NAME, ""));
+        mobnoInput.setText(prefs.getString(Constants.MOB_NUMBER, ""));
+        emailIdInput.setText(prefs.getString(Constants.USER_EMAIL, ""));
+        addressInput.setText(prefs.getString(Constants.USER_ADDRESS, ""));
 
-        login = (Button)view.findViewById(R.id.log_btn);
+        login = (Button) view.findViewById(R.id.log_btn);
         progress = new ProgressDialog(getActivity());
         progress.setMessage("Registering ...");
         progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -89,7 +84,7 @@ public class LoginFragment extends Fragment {
                         emailIdInput.getText().toString(),
                         mobnoInput.getText().toString(),
                         addressInput.getText().toString()
-                        );
+                );
                 call.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -118,7 +113,7 @@ public class LoginFragment extends Fragment {
                         Log.d("Response", resultString);
                         progress.dismiss();
                         if (!TextUtils.isEmpty(resultString)) {
-                            edit.putBoolean(Constants.REGISTERED,true);
+                            edit.putBoolean(Constants.REGISTERED, true);
                             edit.commit();
                             Fragment reg = new HomeScreen();
                             FragmentTransaction ft = getFragmentManager().beginTransaction();

@@ -14,7 +14,6 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 
-
 public class MSGService extends IntentService {
 
     SharedPreferences prefs;
@@ -25,7 +24,6 @@ public class MSGService extends IntentService {
     public MSGService() {
         super("MSGService");
     }
-
 
 
     @Override
@@ -41,16 +39,16 @@ public class MSGService extends IntentService {
 
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                Log.e("L2C","Error");
+                Log.e("L2C", "Error");
 
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
-                Log.e("L2C","Error");
+                Log.e("L2C", "Error");
 
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 
-                if(!prefs.getString("CURRENT_ACTIVE","").equals(extras.getString("fromu"))) {
+                if (!prefs.getString("CURRENT_ACTIVE", "").equals(extras.getString("fromu"))) {
                     sendNotification(extras.getString("msg"), extras.getString("fromu"), extras.getString("name"));
                 }
                 Log.i("TAG", "Received: " + extras.getString("msg"));
@@ -60,9 +58,7 @@ public class MSGService extends IntentService {
     }
 
 
-
-
-    private void sendNotification(String msg,String mobno,String name) {
+    private void sendNotification(String msg, String mobno, String name) {
 
         Bundle args = new Bundle();
         args.putString("mobno", mobno);
@@ -80,7 +76,7 @@ public class MSGService extends IntentService {
                 chat, PendingIntent.FLAG_CANCEL_CURRENT);
         notification.setContentIntent(contentIntent);
         notification.setAutoCancel(true);
-        manager =(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(0, notification.build());
     }
 

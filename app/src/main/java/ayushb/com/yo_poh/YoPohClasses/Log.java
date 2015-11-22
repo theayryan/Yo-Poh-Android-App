@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Created by ayushb on 28/9/15.
  */
-public class Log implements Serializable{
+public class Log implements Serializable {
     String ticketNumber;
     long dateCreated;
     ArrayList<Long> dateModified = new ArrayList<>();
@@ -15,23 +15,23 @@ public class Log implements Serializable{
         return ticketNumber;
     }
 
-    public long getDateCreated() {
-        return dateCreated;
+    public void setTicketNumber(String ticketNumber) {
+        this.ticketNumber = ticketNumber;
     }
 
-    public ArrayList<Long> getDateModified() {
-        return dateModified;
+    public long getDateCreated() {
+        return dateCreated;
     }
 
     public void setDateCreated(long dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public void setDateModified(ArrayList<Long> dateModified) {
-        this.dateModified = dateModified;
+    public ArrayList<Long> getDateModified() {
+        return dateModified;
     }
 
-    public void setTicketNumber(String ticketNumber) {
-        this.ticketNumber = ticketNumber;
+    public void setDateModified(ArrayList<Long> dateModified) {
+        this.dateModified = dateModified;
     }
 }
