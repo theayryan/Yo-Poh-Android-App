@@ -50,20 +50,16 @@ public interface YoPohApi {
             @Field("address") String address
     );
 
-    @FormUrlEncoded
-    @POST("/post/product")
+    @GET("/get/addtomyproducts")
     public Call<ResponseBody> addProduct(
-            @Field("productName") String productName,
-            @Field("price") float price,
-            @Field("category") String category,
-            @Field("companyId") String companyId,
-            @Query("customerId") String customerId
+            @Query("customerId") String customerId,
+            @Query("productId") String productId
     );
 
     @GET("/get/allproducts")
     public Call<ResponseBody> getAllProducts();
 
-    @GET("/get/allproducts")
+    @GET("/get/myproducts")
     public Call<ResponseBody> getMyProducts(
             @Query("customerId") String customerId
     );

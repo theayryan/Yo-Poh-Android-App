@@ -47,8 +47,8 @@ public class AddProductScreen extends Fragment {
     private ArrayList<String> companyNames = new ArrayList<>();
     private ArrayList<Product> productArrayList = new ArrayList<>();
     private ArrayList<String> productNames = new ArrayList<>();
-    AutoCompleteTextView companyTextView, categoryTextView;
-    EditText name, price;
+    AutoCompleteTextView name,companyTextView, categoryTextView;
+    EditText price;
     Button addProductButton;
     private YoPohApi yoPohApi;
     private ProgressDialog progress;
@@ -69,7 +69,7 @@ public class AddProductScreen extends Fragment {
 
         companyTextView = (AutoCompleteTextView) view.findViewById(R.id.company_name);
         categoryTextView = (AutoCompleteTextView) view.findViewById(R.id.category);
-        name = (EditText) view.findViewById(R.id.name);
+        name = (AutoCompleteTextView) view.findViewById(R.id.name);
         price = (EditText) view.findViewById(R.id.price);
         addProductButton = (Button) view.findViewById(R.id.add_product_button);
 
@@ -80,6 +80,43 @@ public class AddProductScreen extends Fragment {
 
         yoPohApi = retrofit.create(YoPohApi.class);
         showProgressDialog();
+
+        yoPohApi.getAllProducts().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
+                if (response != null) {
+                    String resultString = responseString(response);
+                    Log.d("Response", resultString);
+                    try {
+                        JSONArray array = new JSONArray(resultString);
+                        if (array.length() > 0) {
+                            for (int i = 0; i < array.length(); i++) {
+                                JSONObject object = array.getJSONObject(i);
+                                Product product = new Product();
+                                product.setProductName(object.getString("productName"));
+                                product.setCompanyId(object.getString("companyId"));
+                                productNames.add(object.getString("productName"));
+                                product.setProductId(object.getString("productId"));
+                                product.setCategory(object.getString("category"));
+                                product.setPrice(object.getString("price"));
+                                productArrayList.add(product);
+                            }
+                            ArrayAdapter<String> productsAdapter = new ArrayAdapter<String>(activity, android.R.layout.select_dialog_item, productNames);
+                            name.setAdapter(productsAdapter);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        if (progress.isShowing())
+                            progress.dismiss();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+
+            }
+        });
         yoPohApi.getAllCompanies().enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {
@@ -121,12 +158,15 @@ public class AddProductScreen extends Fragment {
         addProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String productId = null;
+                for(Product product: productArrayList) {
+                    if(product.getProductName().equalsIgnoreCase(name.getText().toString())){
+                        productId = product.getProductId();
+                    }
+                }
                 yoPohApi.addProduct(
-                        name.getText().toString(),
-                        Float.valueOf(price.getText().toString()),
-                        categoryTextView.getText().toString(),
-                        companyTextView.getText().toString(),
-                        prefs.getString(Constants.GCM_REG_KEY,"")
+                        prefs.getString(Constants.GCM_REG_KEY,""),
+                        productId
                 ).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Response<ResponseBody> response, Retrofit retrofit) {

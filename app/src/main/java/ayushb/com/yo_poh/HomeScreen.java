@@ -22,6 +22,7 @@ public class HomeScreen extends Fragment implements View.OnClickListener {
     private FragmentActivity activity;
     private SharedPreferences prefs;
     private Button addProduct, addComplaint, viewComplaints, editDetails;
+    private AddComplaintDialog addComplaintDialog;
 
     @Override
     public void onAttach(Context context) {
@@ -56,6 +57,9 @@ public class HomeScreen extends Fragment implements View.OnClickListener {
             case R.id.view_complaints:
                 break;
             case R.id.add_complaint:
+                addComplaintDialog = AddComplaintDialog.getInstance();
+                addComplaintDialog.setCancelable(true);
+                addComplaintDialog.show(getChildFragmentManager(), "AddComplaintDialog");
                 break;
             case R.id.add_product:
                 reg = new AddProductScreen();
