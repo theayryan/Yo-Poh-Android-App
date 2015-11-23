@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -52,21 +53,11 @@ public class ChatActivity extends Activity {
             String message = intent.getStringExtra("Message");
             String from = intent.getStringExtra("From");
             String channel = intent.getStringExtra("Channel");
-
-            TableRow tr1 = new TableRow(getApplicationContext());
-            tr1.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
-            TextView textview = new TextView(getApplicationContext());
-            textview.setTextSize(20);
-            textview.setTextColor(Color.parseColor("#0B0719"));
-            textview.setText(Html.fromHtml("<b>" + from + " : </b>" + message));
-            tr1.addView(textview);
-            tab.addView(tr1);
-
-
         }
     };
     private Complaint complaint;
     private Pubnub pubnub;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +68,8 @@ public class ChatActivity extends Activity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         complaint = (Complaint) getIntent().getSerializableExtra(Constants.CHAT_DETAILS);
         SharedPreferences.Editor edit = prefs.edit();
+
+        scrollView = (ScrollView) findViewById(R.id.scroll_view);
 
         pubnub = new Pubnub(
                 "pub-c-11fab31d-7614-4488-b338-2953846af28a" /* replace with your publish key */,
@@ -275,6 +268,13 @@ public class ChatActivity extends Activity {
         textview.setText(Html.fromHtml("<b>" + message.from + ":" + "</b>" + message.message));
         tr2.addView(textview);
         tab.addView(tr2);
+
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
     }
 
     class Message {
